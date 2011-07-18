@@ -1,0 +1,17 @@
+﻿<Window x:Class="TestWindow.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Name="Window"
+        Title="MainWindow" Height="350" Width="525">
+
+    <Grid>
+        <DockPanel>
+            <StackPanel DockPanel.Dock="Top">
+                <Label Name="ServiceURL" >(URL...)</Label>
+                <Label Name="BindingName">(Name...)</Label>
+            </StackPanel>
+            <Button Click="Go_Click">Go</Button>
+        </DockPanel>
+    </Grid>
+
+</Window>

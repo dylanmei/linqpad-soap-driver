@@ -1,0 +1,97 @@
+﻿<Window x:Class="Driver.Dialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="SOAP Data Services Connection"
+    Width="525" Height="350"
+    WindowStartupLocation="CenterScreen"
+>
+    <Window.Resources>
+        <Style x:Key="ServiceBindngsStyle" TargetType="ListBox">
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ListBoxItem" >
+                        <Setter Property="Margin" Value="4" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <Border Background="Transparent">
+                                        <RadioButton GroupName="ServiceBindings"
+                                                     IsHitTestVisible="False"
+                                                     IsChecked="{TemplateBinding IsSelected}">
+                                            <ContentPresenter />
+                                        </RadioButton>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="8">
+        <Grid Name="Page1" Visibility="Visible">
+            <DockPanel>
+                <Border DockPanel.Dock="Top">
+                    <StackPanel>
+                        <Label>Service URL</Label>
+                        <TextBox Text="{Binding Uri}" TabIndex="0"></TextBox>
+                    </StackPanel>
+                </Border>
+                <Border DockPanel.Dock="Bottom">
+                    <DockPanel LastChildFill="False" Margin="0,8,0,0">
+                        <Button Name="ConnectButton" DockPanel.Dock="Right" Margin="5,0,0,0" Padding="10,4" Click="Connect_Click" IsDefault="True" TabIndex="2">Next &gt;</Button>
+                        <Button DockPanel.Dock="Left" Margin="0,0,5,0" Padding="10,4" TabIndex="1" IsCancel="True">Cancel</Button>
+                    </DockPanel>
+                </Border>
+                <Border></Border>
+            </DockPanel>
+        </Grid>
+        <Grid Name="Page2" Visibility="Hidden">
+            <DockPanel>
+                <Border DockPanel.Dock="Top">
+                    <Label>Service discovery</Label>
+                </Border>
+                <Border DockPanel.Dock="Bottom">
+                    <StackPanel Margin="0,8,0,0">
+                        <ProgressBar Name="Progress" Height="8"></ProgressBar>
+                        <DockPanel LastChildFill="False" Margin="0,8,0,0">
+                            <Button Name="SelectButton" DockPanel.Dock="Right" Margin="5,0,0,0" Padding="10,4" Click="Select_Click" IsDefault="True" TabIndex="3">Next &gt;</Button>
+                            <Button Name="RestartButton" DockPanel.Dock="Right" Margin="5,0,0,0" Padding="10,4" Click="Back_Click" TabIndex="2">&lt; Back</Button>
+                            <Button DockPanel.Dock="Left" Margin="0,0,5,0" Padding="10,4" TabIndex="1" IsCancel="True">Cancel</Button>
+                        </DockPanel>
+                    </StackPanel>
+                </Border>
+                <Border>
+                    <TextBox Name="LogBox" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                    </TextBox>
+                </Border>
+            </DockPanel>
+        </Grid>
+        <Grid Name="Page3" Visibility="Hidden">
+            <DockPanel>
+                <Border DockPanel.Dock="Top">
+                    <Label>Choose a Service binding</Label>
+                </Border>
+                <Border DockPanel.Dock="Bottom">
+                    <StackPanel Margin="0,8,0,0">
+                        <CheckBox IsChecked="{Binding Persist}">Remember this connection</CheckBox>
+                        <DockPanel LastChildFill="False" Margin="0,8,0,0">
+                            <Button Name="FinishButton" DockPanel.Dock="Right" Margin="5,0,0,0" Padding="10,4" Click="Finish_Click" IsDefault="True" TabIndex="3">Done</Button>
+                            <Button DockPanel.Dock="Right" Margin="5,0,0,0" Padding="10,4" Click="Back_Click" TabIndex="2">&lt; Back</Button>
+                            <Button DockPanel.Dock="Left" Margin="0,0,5,0" Padding="10,4" TabIndex="1" IsCancel="True">Cancel</Button>
+                        </DockPanel>
+                    </StackPanel>
+                </Border>
+                <Border>
+                    <ListBox Name="BindingBox"
+                             Style="{StaticResource ServiceBindngsStyle}"
+                             SelectedItem="{Binding BindingName, Mode=TwoWay}"
+                    />
+                </Border>
+            </DockPanel>
+        </Grid>
+    </Grid>
+
+</Window>

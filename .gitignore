@@ -1,0 +1,16 @@
+.DS_Store
+Thumbs.db
+
+[Oo]bj
+[Bb]in
+_ReSharper*
+
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.pdb
+
+packages/*
+!packages/edge
+!packages/nuget.exe
