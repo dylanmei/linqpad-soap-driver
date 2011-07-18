@@ -20,7 +20,7 @@ namespace TestWindow
 		{
 			var info = new ConnectionInfo();
 			var model = new ConnectionModel(info) {
-				Uri = "http://entservices.gettyimages.com/SecurityToken/service.svc?wsdl"
+				Uri = "?"
 			};
 			new Dialog(info).ShowDialog();
 
