@@ -13,12 +13,17 @@ namespace Driver
 
 		public override string Author
 		{
-			get { return "Dylan"; }
+			get { return "github.com/dylanmei"; }
 		}
 
 		public override string GetConnectionDescription(IConnectionInfo connectionInfo)
 		{
-			return new ConnectionModel(connectionInfo).Uri;
+			var model = new ConnectionModel(connectionInfo);
+			var uri = new System.Uri(model.Uri);
+			var host = uri.Port == 80
+				? uri.Host
+				: string.Concat(uri.Host, ':', uri.Port);
+			return string.Format("{0} ({1})", model.BindingName, host);
 		}
 
 		public override bool AreRepositoriesEquivalent (IConnectionInfo r1, IConnectionInfo r2)

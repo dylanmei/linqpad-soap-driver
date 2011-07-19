@@ -13,31 +13,40 @@ namespace Driver
 		public Schema Build(ServiceDescription description, string bindingName, Assembly assembly)
 		{
 			var binding = GetSoapBinding(description, bindingName);
-			var serviceTypes = GetServiceTypes(binding, assembly);
-			var serviceType = serviceTypes.First();
+			var serviceType = GetServiceType(binding, assembly);
 			return new Schema {
 				TypeName = serviceType.Name,
 				Entities = BuildEntities(serviceType, binding)
 			};
 		}
 
-		static IEnumerable<Type> GetServiceTypes(Binding soapBinding, Assembly assembly)
+		static Type GetServiceType(Binding soapBinding, Assembly assembly)
 		{
-            var serviceTypes = new List<Type>();
-
-			// FIXME: Best way to match the service/binding to the implementing type
-			//
-
 			foreach (var type in assembly.GetTypes())
-            {
-                if (type.GetCustomAttributes(typeof(WebServiceBindingAttribute), false).Length != 0)
-                    serviceTypes.Add(type);
-            }
+			{
+				var bindingAttribute = type.GetCustomAttributes(typeof (WebServiceBindingAttribute), false)
+					.Cast<WebServiceBindingAttribute>().SingleOrDefault();
+				if (bindingAttribute != null && bindingAttribute.Name == soapBinding.Name)
+					return type;
+			}
 
-			var name = soapBinding.Type.Name;
-			return string.IsNullOrEmpty(name)
-				? new Type[0]
-				: serviceTypes.Where(t => t.Name == name || t.Name.EndsWith(name));
+			return null;
+
+			//var serviceTypes = new List<Type>();
+
+			//// FIXME: Best way to match the service/binding to the implementing type
+			////
+
+			//foreach (var type in assembly.GetTypes())
+			//{
+			//    var bindingAttributes = type.GetCustomAttributes(typeof (WebServiceBindingAttribute), false);
+			//    if (bindingAttributes.Length != 0) serviceTypes.Add(type);
+			//}
+
+			//var name = soapBinding.Type.Name;
+			//return string.IsNullOrEmpty(name)
+			//    ? new Type[0]
+			//    : serviceTypes.Where(t => t.Name == name || t.Name.EndsWith(name));
 		}
 
 		static List<ExplorerItem> BuildEntities(Type serviceType, Binding soapBinding)
