@@ -42,16 +42,8 @@ namespace Driver
 				Credentials = credentials ?? CredentialCache.DefaultCredentials
 			};
 
-			try
-			{
-				protocol.DiscoverAny(uri);
-				protocol.ResolveAll();
-			}
-			catch (Exception e)
-			{
-				throw new InvalidOperationException(
-					string.Format("Problem resolving url ({0})", uri), e);
-			}
+			protocol.DiscoverAny(uri);
+			protocol.ResolveAll();
 
 			return protocol.Documents;			
 		}

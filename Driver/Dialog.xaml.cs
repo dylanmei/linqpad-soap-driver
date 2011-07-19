@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Windows;
+using System.Windows.Controls;
 using LINQPad.Extensibility.DataContext;
 
 namespace Driver
@@ -10,19 +11,27 @@ namespace Driver
 	{
 		int page;
 		readonly ConnectionLogger logger;
-		readonly ConnectionWorker worker;
+		readonly DiscoveryWorker worker;
 
 		public Dialog(IConnectionInfo connectionInfo)
 		{
 			DataContext = new ConnectionModel(connectionInfo);
 			InitializeComponent();
-			worker = new ConnectionWorker();
+			worker = new DiscoveryWorker();
 			logger = new ConnectionLogger(LogBox);
 		}
 
 		ConnectionModel Model
 		{
 			get { return DataContext as ConnectionModel; }
+		}
+
+		void Uri_Changed(object sender, TextChangedEventArgs e)
+		{
+			if (ConnectButton == null) return;
+
+			var box = (TextBox) sender;
+			ConnectButton.IsEnabled = Uri.IsWellFormedUriString(box.Text, UriKind.Absolute);
 		}
 
 		void Connect_Click(object sender, EventArgs e)
@@ -59,12 +68,19 @@ namespace Driver
 				logger.Write("Connecting to " + Model.Uri);
 
 				worker
-					.Setup(Model.Uri, CredentialCache.DefaultCredentials)
-					.Run(Discovery_Connect);
+					.Failure(Discovery_Failure)
+					.Complete(Discovery_Connect)
+					.Connect(Model.Uri, CredentialCache.DefaultCredentials);
 			}
 		}
 
-		void Discovery_Connect(ConnectionCompleteEventArgs e)
+		void Discovery_Failure(DiscoveryFailureEventArgs e)
+		{
+			logger.Error(e.Reason);
+			RestartButton.IsEnabled = true;
+		}
+
+		void Discovery_Connect(DiscoveryCompleteEventArgs e)
 		{
 			var reference = e.Reference;
 			foreach (var warning in reference.Warnings) logger.Warn(warning);		

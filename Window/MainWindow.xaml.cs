@@ -20,7 +20,7 @@ namespace TestWindow
 		{
 			var info = new ConnectionInfo();
 			var model = new ConnectionModel(info) {
-				Uri = "?"
+				Uri = ""
 			};
 			new Dialog(info).ShowDialog();
 

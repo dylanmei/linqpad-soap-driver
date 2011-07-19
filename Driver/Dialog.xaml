@@ -36,12 +36,12 @@
                 <Border DockPanel.Dock="Top">
                     <StackPanel>
                         <Label>Service URL</Label>
-                        <TextBox Text="{Binding Uri}" TabIndex="0"></TextBox>
+                        <TextBox Text="{Binding Uri}" TabIndex="0" TextChanged="Uri_Changed"></TextBox>
                     </StackPanel>
                 </Border>
                 <Border DockPanel.Dock="Bottom">
                     <DockPanel LastChildFill="False" Margin="0,8,0,0">
-                        <Button Name="ConnectButton" DockPanel.Dock="Right" Margin="5,0,0,0" Padding="10,4" Click="Connect_Click" IsDefault="True" TabIndex="2">Next &gt;</Button>
+                        <Button Name="ConnectButton" DockPanel.Dock="Right" Margin="5,0,0,0" Padding="10,4" Click="Connect_Click" IsDefault="True" IsEnabled="False" TabIndex="2">Next &gt;</Button>
                         <Button DockPanel.Dock="Left" Margin="0,0,5,0" Padding="10,4" TabIndex="1" IsCancel="True">Cancel</Button>
                     </DockPanel>
                 </Border>

@@ -60,10 +60,10 @@
     <Compile Include="CodeProvider.cs" />
     <Compile Include="ConnectionLogger.cs" />
     <Compile Include="DiscoveryBinding.cs" />
-    <Compile Include="ConnectionWorker.cs" />
     <Compile Include="Discovery.cs" />
     <Compile Include="DiscoveryCompiler.cs" />
     <Compile Include="DiscoveryReference.cs" />
+    <Compile Include="DiscoveryWorker.cs" />
     <Compile Include="Proxy.cs" />
     <Compile Include="ProxyBuilder.cs" />
     <Compile Include="Schema.cs" />
