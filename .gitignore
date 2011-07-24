@@ -11,6 +11,7 @@ _ReSharper*
 *.pidb
 *.pdb
 
+releases/*
 packages/*
 !packages/edge
 !packages/nuget.exe
