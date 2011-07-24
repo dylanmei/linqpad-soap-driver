@@ -32,7 +32,6 @@ Global
 		{A57EAD21-9C95-4B9B-9869-CDD3D260B615}.Debug|x86.Build.0 = Debug|x86
 		{A57EAD21-9C95-4B9B-9869-CDD3D260B615}.Release|Any CPU.ActiveCfg = Release|x86
 		{A57EAD21-9C95-4B9B-9869-CDD3D260B615}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{A57EAD21-9C95-4B9B-9869-CDD3D260B615}.Release|Mixed Platforms.Build.0 = Release|x86
 		{A57EAD21-9C95-4B9B-9869-CDD3D260B615}.Release|x86.ActiveCfg = Release|x86
 		{A57EAD21-9C95-4B9B-9869-CDD3D260B615}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
