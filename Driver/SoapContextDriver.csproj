@@ -58,6 +58,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeProvider.cs" />
+    <Compile Include="ConnectionHistoryWriter.cs" />
+    <Compile Include="ConnectionHistoryReader.cs" />
     <Compile Include="ConnectionLogger.cs" />
     <Compile Include="DiscoveryBinding.cs" />
     <Compile Include="Discovery.cs" />

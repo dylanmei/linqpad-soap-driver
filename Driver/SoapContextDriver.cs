@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using LINQPad.Extensibility.DataContext;
 
@@ -19,7 +21,7 @@ namespace Driver
 		public override string GetConnectionDescription(IConnectionInfo connectionInfo)
 		{
 			var model = new ConnectionModel(connectionInfo);
-			var uri = new System.Uri(model.Uri);
+			var uri = new Uri(model.Uri);
 			var host = uri.Port == 80
 				? uri.Host
 				: string.Concat(uri.Host, ':', uri.Port);
@@ -28,7 +30,9 @@ namespace Driver
 
 		public override bool AreRepositoriesEquivalent (IConnectionInfo r1, IConnectionInfo r2)
 		{
-			return Equals(r1.DriverData.Element("Uri"), r2.DriverData.Element("Uri"));
+			var m1 = new ConnectionModel(r1);
+			var m2 = new ConnectionModel(r2);
+			return Equals(m1.Uri, m2.Uri) && Equals(m1.BindingName, m2.BindingName);
 		}
 
 		public override IEnumerable<string> GetAssembliesToAdd ()
@@ -45,30 +49,32 @@ namespace Driver
 
 		public override bool ShowConnectionDialog(IConnectionInfo connectionInfo, bool isNewConnection)
 		{
-			//// Populate the default URI with a demo value:
-			//if (isNewConnection)
-			//    new DialogModel (connectionInfo).Uri = "";
-			return new Dialog(connectionInfo).ShowDialog() == true;
+			var model = new ConnectionModel(connectionInfo,
+				new ConnectionHistoryReader(GetHistoryPath()).Read());
+			return new Dialog(model).ShowDialog() == true;
 		}
-
-		//public override void InitializeContext (IConnectionInfo cxInfo, object context, QueryExecutionManager executionManager)
-		//{
-		//    if (true) return;
-		//}
 
 		public override List<ExplorerItem> GetSchemaAndBuildAssembly(IConnectionInfo connectionInfo, AssemblyName assemblyToBuild, ref string nameSpace, ref string typeName)
 		{
-			var props = new ConnectionModel(connectionInfo);
-			var proxy = new ProxyBuilder(props.Uri)
+			var model = new ConnectionModel(connectionInfo);
+			var proxy = new ProxyBuilder(model.Uri)
 				.Build(assemblyToBuild, nameSpace);
 
 			var schema = new SchemaBuilder()
-				.Build(proxy.Description, props.BindingName, proxy.Assembly);
+				.Build(proxy.Description, model.BindingName, proxy.Assembly);
 
 			nameSpace = proxy.Namespace;
 			typeName = schema.TypeName;
 
+			new ConnectionHistoryWriter(GetHistoryPath())
+				.Append(model.Uri);
+
 			return schema.Entities;
+		}
+
+		string GetHistoryPath()
+		{
+			return Path.Combine(GetDriverFolder(), "uri.history");
 		}
 	}
 }

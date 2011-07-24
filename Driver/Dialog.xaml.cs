@@ -3,7 +3,6 @@ using System.Linq;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
-using LINQPad.Extensibility.DataContext;
 
 namespace Driver
 {
@@ -13,9 +12,9 @@ namespace Driver
 		readonly ConnectionLogger logger;
 		readonly DiscoveryWorker worker;
 
-		public Dialog(IConnectionInfo connectionInfo)
+		public Dialog(ConnectionModel model)
 		{
-			DataContext = new ConnectionModel(connectionInfo);
+			DataContext = model;
 			InitializeComponent();
 			worker = new DiscoveryWorker();
 			logger = new ConnectionLogger(LogBox);
@@ -26,18 +25,13 @@ namespace Driver
 			get { return DataContext as ConnectionModel; }
 		}
 
-		void Uri_Changed(object sender, TextChangedEventArgs e)
-		{
-			if (ConnectButton == null) return;
-
-			var box = (TextBox) sender;
-			ConnectButton.IsEnabled = Uri.IsWellFormedUriString(box.Text, UriKind.Absolute);
-		}
-
 		void Connect_Click(object sender, EventArgs e)
 		{
-			SetVisiblePage(1);
-			Connect();
+			if (Uri.IsWellFormedUriString(Model.Uri, UriKind.Absolute))
+			{
+				SetVisiblePage(1);
+				Connect();
+			}
 		}
 
 		void Select_Click(object sender, EventArgs e)

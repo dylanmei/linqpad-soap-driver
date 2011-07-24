@@ -18,11 +18,11 @@ namespace TestWindow
 
 		void Go_Click(object sender, EventArgs e)
 		{
-			var info = new ConnectionInfo();
-			var model = new ConnectionModel(info) {
+			var model = new ConnectionModel(new ConnectionInfo()) {
 				Uri = ""
 			};
-			new Dialog(info).ShowDialog();
+
+			new Dialog(model).ShowDialog();
 
 			ServiceURL.Content = model.Uri;
 			BindingName.Content = model.BindingName;
