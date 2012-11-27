@@ -1,23 +1,20 @@
 ﻿using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Web.Services;
-using System.Web.Services.Description;
-using System.Web.Services.Discovery;
-using System.Xml.Serialization;
 
 namespace Driver
 {
 	public class ProxyBuilder
 	{
 		readonly Discovery discovery;
+        readonly string driverPath;
 
-		public ProxyBuilder(string url)
+		public ProxyBuilder(string driverPath, string url)
 		{
+            this.driverPath = driverPath;
 			discovery = new Discovery(url, CredentialCache.DefaultCredentials);
 		}
 
@@ -48,7 +45,18 @@ namespace Driver
 				throw new Exception("Cannot compile service proxy: " +
 					results.Errors[0].ErrorText + " (line " + results.Errors[0].Line + ")");
 
+            //WriteSource(codeProvider, reference.CodeDom);
 			return results.CompiledAssembly;
 		}
+
+        void WriteSource(CodeDomProvider codeProvider, CodeCompileUnit compileUnit)
+        {
+            var path = System.IO.Path.Combine(driverPath, "gen.cs");
+            using (var sourceWriter = new System.IO.StreamWriter(path))
+            {
+                codeProvider.GenerateCodeFromCompileUnit(
+                    compileUnit, sourceWriter, new CodeGeneratorOptions { });
+            }
+        }
 	}
 }

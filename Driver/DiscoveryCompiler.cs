@@ -13,7 +13,12 @@ namespace Driver
 		readonly Discovery discovery;
 		readonly CodeDomProvider codeProvider;
 
-		public DiscoveryCompiler(Discovery discovery, CodeDomProvider codeProvider = null)
+        public DiscoveryCompiler(Discovery discovery)
+            : this(discovery, CodeProvider.Default)
+        {
+        }
+
+	    public DiscoveryCompiler(Discovery discovery, CodeDomProvider codeProvider)
 		{
 			this.discovery = discovery;
 			this.codeProvider = codeProvider ?? CodeProvider.Default;
@@ -35,13 +40,13 @@ namespace Driver
 		{
 			var result = new DiscoveryReference();
 			CheckInteroperabilityConformance(reference, result);
-
+            
 			var webReferences = new WebReferenceCollection {reference};
 			var options = new WebReferenceOptions {
-				CodeGenerationOptions = CodeGenerationOptions.GenerateProperties
+                CodeGenerationOptions = CodeGenerationOptions.GenerateProperties,
 			};
 
-			ServiceDescriptionImporter.GenerateWebReferences(
+            ServiceDescriptionImporter.GenerateWebReferences(
 				webReferences, codeProvider, compileUnit, options);
 			CheckDescriptionImportValidations(reference, result);
 
