@@ -1,14 +1,95 @@
-﻿using System.CodeDom;
+﻿using System;
+using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.ServiceModel.Description;
 using System.Web.Services;
 using System.Web.Services.Description;
 using System.Xml.Serialization;
+using Binding = System.Web.Services.Description.Binding;
+using ServiceDescription = System.Web.Services.Description.ServiceDescription;
 
 namespace Driver
 {
-	public class DiscoveryCompiler
+    public class ContractCompiler
+    {
+        readonly CodeDomProvider codeProvider;
+        const string ErrorHeading = "Cannot compile service proxy. ";
+
+        public ContractCompiler(CodeDomProvider codeProvider)
+		{
+			this.codeProvider = codeProvider ?? CodeProvider.Default;
+		}
+
+        public DiscoveryReference CompileDiscovery(ContractDiscovery discovery, AssemblyName assemblyName, string @namespace)
+        {
+            var generator = new ServiceContractGenerator {
+                Options = ServiceContractGenerationOptions.None,
+            };
+            generator.NamespaceMappings.Add("*", @namespace);
+
+            foreach (var contract in discovery.GetContracts())
+            {
+                generator.GenerateServiceContractType(contract);
+            }
+
+            var reference = new DiscoveryReference();
+            CheckImportValidations(generator.Errors, reference);
+
+            if (!reference.HasErrors)
+            {
+                reference.Bindings.AddRange(
+                    GetSoapBindings(discovery.GetServices()));
+                reference.CodeDom = generator.TargetCompileUnit;
+
+                var results = Compile(generator.TargetCompileUnit, assemblyName);
+                CheckCompileResults(results.Errors);
+                reference.CompiledAssembly = results.CompiledAssembly;
+            }
+
+            return reference;
+        }
+
+        CompilerResults Compile(CodeCompileUnit compileUnit, AssemblyName assemblyName)
+        {
+            var options = new CompilerParameters(
+                "System.dll System.Core.dll System.Xml.dll System.Web.Services.dll System.ServiceModel.dll System.Runtime.Serialization.dll".Split(),
+                assemblyName.CodeBase, true);
+
+            return codeProvider.CompileAssemblyFromDom(options, compileUnit);
+        }
+
+        static IEnumerable<DiscoveryBinding> GetSoapBindings(IEnumerable<ServiceDescription> serviceDescriptions)
+        {
+            var description = serviceDescriptions.First();
+            return description.Bindings.Cast<Binding>()
+                .Where(binding => binding.Extensions.OfType<SoapBinding>().Any())
+                .OrderByDescending(binding => binding.Type.Name)
+                .Select(sb => new DiscoveryBinding(sb));
+        }
+
+        static void CheckImportValidations(IEnumerable<MetadataConversionError> validations, DiscoveryReference result)
+        {
+            foreach (var validation in validations)
+            {
+                if (validation.IsWarning) result.Warn(validation.Message);
+                else result.Error(validation.Message);
+            }
+        }
+
+        static void CheckCompileResults(CompilerErrorCollection errors)
+        {
+            if (errors.Count > 0)
+            {
+                throw new Exception(ErrorHeading +
+                    errors[0].ErrorText + " (line " + errors[0].Line + ")");
+            }
+        }
+    }
+
+    public class DiscoveryCompiler
 	{
 		readonly Discovery discovery;
 		readonly CodeDomProvider codeProvider;
@@ -52,8 +133,8 @@ namespace Driver
 
 			if (!result.HasErrors)
 			{
-				result.CodeDom = compileUnit;
-				result.CodeProvider = codeProvider;
+                //result.CodeDom = compileUnit;
+                //result.CodeProvider = codeProvider;
 				result.Bindings.AddRange(
 					GetSoapBindings(discovery.GetServices()));
 			}

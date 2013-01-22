@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Web.Services;
+using System.ServiceModel;
 using System.Web.Services.Description;
 using LINQPad.Extensibility.DataContext;
 
@@ -24,29 +24,13 @@ namespace Driver
 		{
 			foreach (var type in assembly.GetTypes())
 			{
-				var bindingAttribute = type.GetCustomAttributes(typeof (WebServiceBindingAttribute), false)
-					.Cast<WebServiceBindingAttribute>().SingleOrDefault();
-				if (bindingAttribute != null && bindingAttribute.Name == soapBinding.Name)
+                var bindingAttribute = type.GetCustomAttributes(typeof(ServiceContractAttribute), false)
+                    .Cast<ServiceContractAttribute>().SingleOrDefault();
+				if (bindingAttribute != null && bindingAttribute.Name == soapBinding.Type.Name)
 					return type;
 			}
 
 			return null;
-
-			//var serviceTypes = new List<Type>();
-
-			//// FIXME: Best way to match the service/binding to the implementing type
-			////
-
-			//foreach (var type in assembly.GetTypes())
-			//{
-			//    var bindingAttributes = type.GetCustomAttributes(typeof (WebServiceBindingAttribute), false);
-			//    if (bindingAttributes.Length != 0) serviceTypes.Add(type);
-			//}
-
-			//var name = soapBinding.Type.Name;
-			//return string.IsNullOrEmpty(name)
-			//    ? new Type[0]
-			//    : serviceTypes.Where(t => t.Name == name || t.Name.EndsWith(name));
 		}
 
 		static List<ExplorerItem> BuildEntities(Type serviceType, Binding soapBinding)

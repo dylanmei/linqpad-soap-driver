@@ -47,6 +47,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Services.Client" />
     <Reference Include="System.Data.Services.Design" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
@@ -61,6 +62,7 @@
     <Compile Include="ConnectionHistoryWriter.cs" />
     <Compile Include="ConnectionHistoryReader.cs" />
     <Compile Include="ConnectionLogger.cs" />
+    <Compile Include="ContractDiscovery.cs" />
     <Compile Include="DiscoveryBinding.cs" />
     <Compile Include="Discovery.cs" />
     <Compile Include="DiscoveryCompiler.cs" />

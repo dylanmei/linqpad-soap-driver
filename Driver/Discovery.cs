@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Web.Services.Description;
 using System.Web.Services.Discovery;
+using ServiceDescription = System.Web.Services.Description.ServiceDescription;
 
 namespace Driver
 {
-	public class Discovery
+    public class Discovery
 	{
 		readonly string uri;
 		readonly ICredentials credentials;

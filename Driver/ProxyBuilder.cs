@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -9,46 +10,39 @@ namespace Driver
 {
 	public class ProxyBuilder
 	{
-		readonly Discovery discovery;
         readonly string driverPath;
+	    readonly ContractDiscovery discovery;
 
 		public ProxyBuilder(string driverPath, string url)
 		{
             this.driverPath = driverPath;
-			discovery = new Discovery(url, CredentialCache.DefaultCredentials);
+			discovery = new ContractDiscovery(url, CredentialCache.DefaultCredentials);
 		}
 
-		public Proxy Build(AssemblyName assemblyName, string nameSpace)
+        public Proxy Build(AssemblyName assemblyName, string @namespace)
 		{
 			var description = discovery.GetServices().First();
-			var assembly = BuildAssembly(assemblyName, nameSpace);
+            var assembly = BuildAssembly(assemblyName, @namespace);
 
 			return new Proxy {
-				Namespace = nameSpace,
+                Namespace = @namespace,
 				Description = description,
 				Assembly = assembly
 			};
 		}
 
-		Assembly BuildAssembly(AssemblyName assemblyName, string nameSpace)
+		Assembly BuildAssembly(AssemblyName assemblyName, string @namespace)
 		{
-			var codeProvider = CodeProvider.Default;
-			var reference = new DiscoveryCompiler(discovery, codeProvider)
-				.GenerateReference(nameSpace);
+            var codeProvider = CodeProvider.Default;
 
-			var options = new CompilerParameters(
-				"System.dll System.Core.dll System.Xml.dll System.Web.Services.dll".Split(),
-				assemblyName.CodeBase, true);
-			var results = codeProvider.CompileAssemblyFromDom(options, new[] {reference.CodeDom});
+            var compileResults = new ContractCompiler(codeProvider)
+                .CompileDiscovery(discovery, assemblyName, @namespace);
 
-			if (results.Errors.Count > 0)
-				throw new Exception("Cannot compile service proxy: " +
-					results.Errors[0].ErrorText + " (line " + results.Errors[0].Line + ")");
-
-            //WriteSource(codeProvider, reference.CodeDom);
-			return results.CompiledAssembly;
+            WriteSource(codeProvider, compileResults.CodeDom);
+			return compileResults.CompiledAssembly;
 		}
 
+        [Conditional("DEBUG")]
         void WriteSource(CodeDomProvider codeProvider, CodeCompileUnit compileUnit)
         {
             var path = System.IO.Path.Combine(driverPath, "gen.cs");

@@ -1,9 +1,11 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoapContextDriver", "Driver\SoapContextDriver.csproj", "{981189D9-3E97-4BBA-B8FE-DAA2D605806B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Window", "Window\Window.csproj", "{A57EAD21-9C95-4B9B-9869-CDD3D260B615}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console", "Console\Console.csproj", "{A84A8AD3-198B-4DFF-A25B-07BEB4B563C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,6 +36,16 @@ Global
 		{A57EAD21-9C95-4B9B-9869-CDD3D260B615}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{A57EAD21-9C95-4B9B-9869-CDD3D260B615}.Release|x86.ActiveCfg = Release|x86
 		{A57EAD21-9C95-4B9B-9869-CDD3D260B615}.Release|x86.Build.0 = Release|x86
+		{A84A8AD3-198B-4DFF-A25B-07BEB4B563C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A84A8AD3-198B-4DFF-A25B-07BEB4B563C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A84A8AD3-198B-4DFF-A25B-07BEB4B563C9}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A84A8AD3-198B-4DFF-A25B-07BEB4B563C9}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{A84A8AD3-198B-4DFF-A25B-07BEB4B563C9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A84A8AD3-198B-4DFF-A25B-07BEB4B563C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A84A8AD3-198B-4DFF-A25B-07BEB4B563C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A84A8AD3-198B-4DFF-A25B-07BEB4B563C9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A84A8AD3-198B-4DFF-A25B-07BEB4B563C9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{A84A8AD3-198B-4DFF-A25B-07BEB4B563C9}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
