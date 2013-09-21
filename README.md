@@ -11,11 +11,11 @@ A SOAP service driver for LINQPad. Useful for invoking SOAP-based services with 
    *View more drivers*  
    *Browse to a .LPX file*
 
-- Complete the connection dialog beginning with entering the HTTP URL of your service and selecting the SOAP binding you wish to use.
+- Complete the connection dialog by entering the HTTP URL of your service and then selecting the SOAP binding you wish to use.
 - Reveal the endpoint operations by expanding your new connection in the LINQPad explorer view.
 
 ## troubleshooting
-* When connecting, the driver is looking for the service's WSDL file by looking in common locations. If you're having trouble here, try specifying the exact HTTP URL of  the WSDL file.
+* When connecting, the driver is looking for the service's WSDL file by looking in common locations. If you're having trouble here, try specifying the exact HTTP URL of the WSDL file as you'd see it in your browser.
 * .NET DateTime fields don't work very well.
 * Nullable fields don't work very well. For such fields, an extra *Specified* field is generated. You must set this extra field as *true* if you are specifying a value for your Nullable field.
 
