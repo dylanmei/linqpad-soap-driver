@@ -58,9 +58,8 @@ namespace Driver
 
 		static IEnumerable<DiscoveryBinding> GetSoapBindings(IEnumerable<ServiceDescription> serviceDescriptions)
 		{
-			var description = serviceDescriptions.First();
-			return description.Bindings.Cast<Binding>()
-				.Where(binding => binding.Extensions.OfType<SoapBinding>().Any())
+            var description = serviceDescriptions.First();
+		    return description.GetSoapBindings()
 				.OrderByDescending(binding => binding.Type.Name)
 				.Select(sb => new DiscoveryBinding(sb));
 		}

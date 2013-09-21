@@ -79,8 +79,7 @@ namespace Driver
 
 		static Binding GetSoapBinding(ServiceDescription description, string bindingName)
 		{
-			var soapBindings = description.Bindings.Cast<Binding>()
-				.Where(binding => binding.Extensions.OfType<SoapBinding>().Any())
+			var soapBindings = description.GetSoapBindings()
 				.Where(binding => binding.Name == bindingName)
 				.OrderByDescending(binding => binding.Type.Name);
 			return soapBindings.FirstOrDefault();

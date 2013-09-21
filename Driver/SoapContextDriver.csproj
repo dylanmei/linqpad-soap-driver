@@ -76,6 +76,7 @@
       <DependentUpon>Dialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WsdlExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Dialog.xaml">
