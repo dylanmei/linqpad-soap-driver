@@ -1,6 +1,6 @@
 # linqpad-soap-driver
 
-A SOAP service driver for LINQPad
+A SOAP service driver for LINQPad. Useful for invoking SOAP-based services with minimal pain and fuss. For the best experience, this goes especially well with the auto-complete support in [LINQPad Pro](http://www.linqpad.net/Purchase.aspx).
 
 ## setup
 
