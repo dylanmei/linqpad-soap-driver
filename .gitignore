@@ -10,6 +10,7 @@ _ReSharper*
 *.userprefs
 *.pidb
 *.pdb
+*crunch*
 
 releases/*
 packages/*
