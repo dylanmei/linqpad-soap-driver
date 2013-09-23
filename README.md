@@ -5,7 +5,7 @@ A SOAP service driver for LINQPad. Useful for invoking SOAP-based services with 
 ## setup
 
 - Download the latest version [soap-driver-1.2.2.lpx](http://dylanmei.s3.amazonaws.com/linqpad-drivers/soap-driver-1.2.2.lpx). 
-- In LINQPad load the downloads file by choosing:
+- In LINQPad load the driver by choosing:
 
    *Add Connection*  
    *View more drivers*  
