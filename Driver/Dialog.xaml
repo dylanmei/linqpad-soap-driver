@@ -4,6 +4,7 @@
     Title="SOAP Data Services Connection"
     Width="525" Height="350"
     WindowStartupLocation="CenterScreen"
+    FocusManager.FocusedElement="{Binding ElementName=UriComboBox}"
 >
     <Window.Resources>
         <Style x:Key="ServiceBindngsStyle" TargetType="ListBox">
@@ -36,7 +37,7 @@
                 <Border DockPanel.Dock="Top">
                     <StackPanel>
                         <Label>Service URL</Label>
-                        <ComboBox Text="{Binding Uri}" TabIndex="0" IsEditable="True"
+                        <ComboBox x:Name="UriComboBox" Text="{Binding Uri}" TabIndex="0" IsEditable="True"
                                   SelectedValue="{Binding Uri}"
                                   ItemsSource="{Binding KnownUris}"></ComboBox>
                     </StackPanel>
