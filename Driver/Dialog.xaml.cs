@@ -27,12 +27,20 @@ namespace Driver
 
 		void Connect_Click(object sender, EventArgs e)
 		{
-			if (Uri.IsWellFormedUriString(Model.Uri, UriKind.Absolute))
-			{
-				SetVisiblePage(1);
-				Connect();
-			}
-		}
+            //allow open local wsdl file suchas file:///C:/temp/my.wsdl
+            try
+            {
+                var uri = new Uri(Model.Uri);
+                {
+                    SetVisiblePage(1);
+                    Connect();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
 
 		void Select_Click(object sender, EventArgs e)
 		{
