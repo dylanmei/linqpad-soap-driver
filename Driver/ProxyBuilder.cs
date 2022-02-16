@@ -18,7 +18,7 @@ namespace Driver
 
 		public ProxyBuilder(string url)
 		{
-			discovery = new Discovery(url, CredentialCache.DefaultCredentials);
+			discovery = new Discovery(url, CredentialCache.DefaultCredentials, false);
 		}
 
 		public Proxy Build(AssemblyName assemblyName, string nameSpace)

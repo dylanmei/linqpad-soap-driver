@@ -40,6 +40,7 @@
                         <ComboBox x:Name="UriComboBox" Text="{Binding Uri}" TabIndex="0" IsEditable="True"
                                   SelectedValue="{Binding Uri}"
                                   ItemsSource="{Binding KnownUris}"></ComboBox>
+
                     </StackPanel>
                 </Border>
                 <Border DockPanel.Dock="Bottom">
@@ -48,7 +49,17 @@
                         <Button DockPanel.Dock="Left" Margin="0,0,5,0" Padding="10,4" TabIndex="1" IsCancel="True">Cancel</Button>
                     </DockPanel>
                 </Border>
-                <Border></Border>
+                <Border>
+                    <StackPanel Margin="0,5,0,0">
+                        <CheckBox x:Name="useBasicAuth" Content="Use Basic Auth" Margin="5"/>
+                        <Grid>
+                            <Label Content="LoginName" Margin="10,4,391,6" Width="100"/>
+                            <TextBox x:Name="loginName" Margin="103,8,232,2"/>
+                            <Label  Content="Password" Margin="10,44,391,-44"/>
+                            <PasswordBox x:Name="password" Margin="103,44,232,-35"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
             </DockPanel>
         </Grid>
         <Grid Name="Page2" Visibility="Hidden">
