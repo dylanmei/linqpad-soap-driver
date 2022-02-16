@@ -86,7 +86,7 @@ namespace Driver
 				//protocol.UnsafeAuthenticatedConnectionSharing = true;
             }
 			protocol.Credentials = credentials ?? CredentialCache.DefaultCredentials;
-			protocol.PreAuthenticate = true;
+			//protocol.PreAuthenticate = true;
 			protocol.DiscoverAny(uri);
 			protocol.ResolveAll();
 

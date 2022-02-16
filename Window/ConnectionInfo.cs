@@ -21,12 +21,14 @@ namespace TestWindow
 
 		public string Encrypt(string data)
 		{
-			throw new NotImplementedException();
+			return data;
+			//throw new NotImplementedException();
 		}
 
 		public string Decrypt(string data)
 		{
-			throw new NotImplementedException();
+			return data;
+			//throw new NotImplementedException();
 		}
 
 		public IDatabaseInfo DatabaseInfo

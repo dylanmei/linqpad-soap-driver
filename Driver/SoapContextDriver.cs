@@ -57,7 +57,7 @@ namespace Driver
 		public override List<ExplorerItem> GetSchemaAndBuildAssembly(IConnectionInfo connectionInfo, AssemblyName assemblyToBuild, ref string nameSpace, ref string typeName)
 		{
 			var model = new ConnectionModel(connectionInfo);
-			var proxy = new ProxyBuilder(model.Uri)
+			var proxy = new ProxyBuilder(model)
 				.Build(assemblyToBuild, nameSpace);
 
 			var schema = new SchemaBuilder()

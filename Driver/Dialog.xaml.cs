@@ -51,6 +51,12 @@ namespace Driver
 		void Finish_Click(object sender, EventArgs e)
 		{
 			// Close window
+			Model.Persist = true;
+			if (this.useBasicAuth.IsChecked == true)
+            {
+				Model.UserName = this.loginName.Text;
+				Model.Password = this.password.Password;
+            }
 			DialogResult = true;
 		}
 

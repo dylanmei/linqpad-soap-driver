@@ -33,6 +33,18 @@ namespace Driver
 			set { DriverData.SetElementValue ("Uri", value); }
 		}
 
+		public string UserName
+        {
+			get { return (string) DriverData.Element("UserName") ?? ""; }
+			set { DriverData.SetElementValue("UserName", value); }
+        }
+
+		public string Password
+        {
+			get { return connectionInfo.Decrypt((string)DriverData.Element("Password") ?? ""); }
+			set { DriverData.SetElementValue("Password", connectionInfo.Encrypt(value)); }
+        }
+
 		public string BindingName
 		{
 			get { return (string) DriverData.Element("Binding") ?? ""; }

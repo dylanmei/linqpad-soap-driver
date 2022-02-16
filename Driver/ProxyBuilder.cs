@@ -16,9 +16,18 @@ namespace Driver
 	{
 		readonly Discovery discovery;
 
-		public ProxyBuilder(string url)
+		public ProxyBuilder(ConnectionModel model)
 		{
-			discovery = new Discovery(url, CredentialCache.DefaultCredentials, false);
+			var cred = CredentialCache.DefaultCredentials;
+			if (!String.IsNullOrEmpty(model.Password))
+			{
+				cred = new NetworkCredential(model.UserName, model.Password);
+				discovery = new Discovery(model.Uri, cred.GetCredential(new Uri(model.Uri), "Basic"), true);
+			}
+			else
+			{
+				discovery = new Discovery(model.Uri, CredentialCache.DefaultCredentials, false);
+			}
 		}
 
 		public Proxy Build(AssemblyName assemblyName, string nameSpace)
