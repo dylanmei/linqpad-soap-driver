@@ -16,6 +16,7 @@ namespace Driver
 		{
 			DataContext = model;
 			InitializeComponent();
+			password.Password = model.Password;
 			worker = new DiscoveryWorker();
 			logger = new ConnectionLogger(LogBox);
 		}
@@ -27,11 +28,15 @@ namespace Driver
 
 		void Connect_Click(object sender, EventArgs e)
 		{
-			if (Uri.IsWellFormedUriString(Model.Uri, UriKind.Absolute))
+			if (Uri.IsWellFormedUriString(Model.Uri, UriKind.Absolute) || Model.Uri.StartsWith("file:"))
 			{
 				SetVisiblePage(1);
 				Connect();
 			}
+			else
+            {
+				Console.WriteLine("Invalid Url!");
+            }
 		}
 
 		void Select_Click(object sender, EventArgs e)
@@ -47,6 +52,13 @@ namespace Driver
 		void Finish_Click(object sender, EventArgs e)
 		{
 			// Close window
+			Model.Persist = true;
+			if (this.useBasicAuth.IsChecked == true)
+            {
+				Model.UseBasicAuth = true;
+				Model.UserName = this.loginName.Text;
+				Model.Password = this.password.Password;
+            }
 			DialogResult = true;
 		}
 
@@ -61,10 +73,22 @@ namespace Driver
 				logger.Clear();
 				logger.Write("Connecting to " + Model.Uri);
 
-				worker
+				NetworkCredential cred = CredentialCache.DefaultNetworkCredentials;
+
+				var isBasicAuth = useBasicAuth.IsChecked == true;
+				if (isBasicAuth)
+				{
+					var cred2 = new NetworkCredential()
+					{
+						UserName = loginName.Text.Trim(),
+						Password = password.Password.Trim()
+					};
+					cred = cred2.GetCredential(new Uri(Model.Uri), "Basic");
+				}
+                worker
 					.Failure(Discovery_Failure)
 					.Complete(Discovery_Connect)
-					.Connect(Model.Uri, CredentialCache.DefaultCredentials);
+					.Connect(Model.Uri, cred, isBasicAuth);
 			}
 		}
 

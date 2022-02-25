@@ -15,18 +15,23 @@ namespace Driver
 	{
 		readonly string uri;
 		readonly ICredentials credentials;
-		DiscoveryClientDocumentCollection documents;
+
+        public bool basicAuth { get; private set; }
+
+        DiscoveryClientDocumentCollection documents;
 
         // Handle SSL cert errors (see http://stackoverflow.com/questions/777607/the-remote-certificate-is-invalid-according-to-the-validation-procedure-ple)
         static Discovery()
         {
             ServicePointManager.ServerCertificateValidationCallback = OnServerCertificateValidationCallback;
-        }
+			System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+		}
 
-		public Discovery(string uri, ICredentials credentials)
+		public Discovery(string uri, ICredentials credentials, bool isBasicAuth)
 		{
 			this.uri = uri;
 			this.credentials = credentials;
+			this.basicAuth = isBasicAuth;
 		}
 
 		public IEnumerable<ServiceDescription> GetServices()
@@ -71,9 +76,17 @@ namespace Driver
 			var protocol = new DiscoveryClientProtocol {
 				AllowAutoRedirect = true,
                 
-				Credentials = credentials ?? CredentialCache.DefaultCredentials
+				Credentials = credentials ?? CredentialCache.DefaultCredentials,
+				
 			};
-
+			if (basicAuth)
+            {
+				protocol.UseDefaultCredentials = false;
+				protocol.CookieContainer = new CookieContainer();
+				//protocol.UnsafeAuthenticatedConnectionSharing = true;
+            }
+			protocol.Credentials = credentials ?? CredentialCache.DefaultCredentials;
+			//protocol.PreAuthenticate = true;
 			protocol.DiscoverAny(uri);
 			protocol.ResolveAll();
 

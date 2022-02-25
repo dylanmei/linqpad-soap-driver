@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Net;
 
 namespace Driver
@@ -52,9 +53,9 @@ namespace Driver
 			return this;
 		}
 
-		public void Connect(string uri, ICredentials credentials)
+		public void Connect(string uri, ICredentials credentials, bool isBasicAuth)
 		{
-			worker.RunWorkerAsync(new Discovery(uri, credentials));
+			worker.RunWorkerAsync(new Discovery(uri, credentials, isBasicAuth));
 		}
 
 		static void OnDoWork(object sender, DoWorkEventArgs args)
@@ -72,7 +73,12 @@ namespace Driver
 				}
 				catch (InvalidOperationException ioe)
 				{
+					Debug.WriteLine(ioe.Message);
 					result.FailureReason = ioe.Message;
+					if (ioe.InnerException != null)
+                    {
+						result.FailureReason += "\n" + ioe.InnerException.Message;
+                    }
 				}
 			}
 		}
