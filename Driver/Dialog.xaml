@@ -51,10 +51,11 @@
                 </Border>
                 <Border>
                     <StackPanel Margin="0,5,0,0">
-                        <CheckBox x:Name="useBasicAuth" Content="Use Basic Auth" Margin="5"/>
+                        <CheckBox x:Name="useBasicAuth" Content="Use Basic Auth" Margin="5" 
+                                  IsChecked="{Binding Path=UseBasicAuth}"/>
                         <Grid>
                             <Label Content="LoginName" Margin="10,4,391,6" Width="100"/>
-                            <TextBox x:Name="loginName" Margin="103,8,232,2"/>
+                            <TextBox x:Name="loginName" Margin="103,8,232,2" Text="{Binding Path=UserName}"/>
                             <Label  Content="Password" Margin="10,44,391,-44"/>
                             <PasswordBox x:Name="password" Margin="103,44,232,-35"/>
                         </Grid>

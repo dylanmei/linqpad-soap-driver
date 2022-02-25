@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
 using LINQPad.Extensibility.DataContext;
 
@@ -43,6 +44,12 @@ namespace Driver
         {
 			get { return connectionInfo.Decrypt((string)DriverData.Element("Password") ?? ""); }
 			set { DriverData.SetElementValue("Password", connectionInfo.Encrypt(value)); }
+        }
+
+		public bool UseBasicAuth
+        {
+			get { return  Boolean.Parse((string) DriverData.Element("UseBasicAuth")??"False"); }
+			set { DriverData.SetElementValue("UseBasicAuth", value.ToString()); }
         }
 
 		public string BindingName

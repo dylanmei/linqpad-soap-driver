@@ -16,6 +16,7 @@ namespace Driver
 		{
 			DataContext = model;
 			InitializeComponent();
+			password.Password = model.Password;
 			worker = new DiscoveryWorker();
 			logger = new ConnectionLogger(LogBox);
 		}
@@ -54,6 +55,7 @@ namespace Driver
 			Model.Persist = true;
 			if (this.useBasicAuth.IsChecked == true)
             {
+				Model.UseBasicAuth = true;
 				Model.UserName = this.loginName.Text;
 				Model.Password = this.password.Password;
             }
